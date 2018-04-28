@@ -23,6 +23,8 @@ libraryDependencies ++=
     "org.typelevel" %% "cats-core" % "1.0.1",
     "com.chuusai" %% "shapeless" % "2.3.2",
 
+    "tech.navicore" %% "navipath" % "0.1.5",
+
     "org.scalatest" %% "scalatest" % "3.0.5" % "test"
 
   )

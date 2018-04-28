@@ -2,8 +2,21 @@ package onextent.scratch.scratchcats
 
 import com.typesafe.scalalogging.LazyLogging
 import org.scalatest._
+import onextent.data.navipath.dsl.NaviPathSyntax._
 
-class JsonInterfaceSyntaxSpec extends FlatSpec with LazyLogging {
+import scala.io.Source
+
+class ScratchSpec extends FlatSpec with LazyLogging {
+
+  val jsonString: String = Source.fromResource("widget.json").mkString
+
+  "A json string" should "parse" in {
+
+    val parsedJson = jsonString.asJson
+    val debug = parsedJson.query[String]("$.widget.debug")
+    assert(debug.contains("on"))
+
+  }
 
   // Define a very simple JSON AST
   sealed trait MyJson
@@ -19,7 +32,7 @@ class JsonInterfaceSyntaxSpec extends FlatSpec with LazyLogging {
 
   final case class Human(name: String, email: String)
 
-  object MyJsonWriterInstances {
+  object MyJsonWriter {
 
     implicit val stringWriter: MyJsonWriter[String] =
       (value: String) => JsString(value)
@@ -31,10 +44,6 @@ class JsonInterfaceSyntaxSpec extends FlatSpec with LazyLogging {
           "email" -> JsString(value.email)
         ))
 
-  }
-
-  object MyJsonSyntax {
-
     implicit class MyJsonWriterOps[A](value: A) {
       def toJson(implicit w: MyJsonWriter[A]): MyJson =
         w.write(value)
@@ -44,8 +53,9 @@ class JsonInterfaceSyntaxSpec extends FlatSpec with LazyLogging {
 
   "An obj" should "be json via syntax" in {
 
-    import MyJsonWriterInstances._
-    import MyJsonSyntax._
+    //import MyJsonWriterInstances._
+    //import MyJsonSyntax._
+    import MyJsonWriter._
 
     val dave = Human("Dave", "dave@example.com")
     println(s"syntax 1 ${dave.toJson}")
@@ -55,4 +65,13 @@ class JsonInterfaceSyntaxSpec extends FlatSpec with LazyLogging {
 
   }
 
+  "An obj" should "be be found implicitly" in {
+
+    //import MyJsonWriterInstances._
+
+    val o = implicitly[MyJsonWriter[String]]
+
+    println(s"implicitly $o")
+
+  }
 }

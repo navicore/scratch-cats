@@ -24,14 +24,11 @@ class JsonInterfaceObjectSpec extends FlatSpec with LazyLogging {
       (value: String) => JsString(value)
 
     implicit val personWriter: JsonWriter[Person] =
-      new JsonWriter[Person] {
-        def write(value: Person): Json =
-          JsObject(
-            Map(
-              "name" -> JsString(value.name),
-              "email" -> JsString(value.email)
-            ))
-      }
+      (value: Person) => JsObject(
+        Map(
+          "name" -> JsString(value.name),
+          "email" -> JsString(value.email)
+        ))
   }
 
   object Json {
