@@ -7,6 +7,8 @@ javaOptions in test ++= Seq(
   "-XX:+CMSClassUnloadingEnabled"
 )
 
+scalacOptions += "-Ypartial-unification"
+
 parallelExecution in test := false
 
 version := "1.0"
@@ -20,7 +22,7 @@ libraryDependencies ++=
     "com.typesafe" % "config" % "1.3.3",
     "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
 
-    "org.typelevel" %% "cats-core" % "1.0.1",
+    "org.typelevel" %% "cats-core" % "1.1.0",
     "com.chuusai" %% "shapeless" % "2.3.2",
 
     "tech.navicore" %% "navipath" % "0.1.5",
