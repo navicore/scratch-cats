@@ -36,9 +36,31 @@ class EqSyntaxSpec extends FlatSpec with LazyLogging with Matchers {
 
     //val r3 = cat1 === cat3 // compile error since there is no Eq imple for Cat and String!  yay!!
 
+    val r4 = cat1 === cat2
+    assertResult(false)(r4)
+
     println(cat1.show)
     println(cat2.show)
 
   }
+
+  "An optional cat" should "equal an optional cat" in {
+
+    val convertToEqualizer = ()  // shadow ScalaTest
+
+    implicit val catEq: Eq[Cat] =
+      Eq.instance[Cat] { (cat1, cat2) =>
+        cat1.toString === cat2.toString // NOTE Intellij can't find === but it is there for String via an Eq instance
+      }
+
+    val cat1 = Cat("Garfield", 60, "orange")
+
+    val optionCat1 = Option(cat1)
+    val optionCat2 = Option.empty[Cat]
+
+    assertResult(false)(optionCat1 === optionCat2)
+
+  }
+
 
 }
