@@ -27,6 +27,7 @@ libraryDependencies ++=
 
     "tech.navicore" %% "navipath" % "0.1.5",
 
+    "com.ironcorelabs" %% "cats-scalatest" % "2.3.1" % "test",
     "org.scalatest" %% "scalatest" % "3.0.5" % "test"
 
   )
